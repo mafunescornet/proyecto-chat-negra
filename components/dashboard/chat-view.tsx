@@ -40,22 +40,52 @@ interface ChatViewProps {
   isContactPanelOpen: boolean
 }
 
+const MEDIA_LABELS: Record<string, string> = {
+  image:    '📷 Image',
+  video:    '🎞️ Video',
+  audio:    '🎵 Audio',
+  ptt:      '🎙️ Voice Note',
+  document: '📎 Document',
+  sticker:  '🎭 Sticker',
+  location: '📍 Location',
+}
+
 function MessageBubble({ message }: { message: Message }) {
-  const isAgent = message.fromMe;
-  
+  // --- System event: centered gray italic text, no bubble ---
+  if (message.isSystem) {
+    return (
+      <div className="flex justify-center px-4 py-1">
+        <span className="text-[11px] text-muted-foreground italic bg-muted/60 px-3 py-1 rounded-full">
+          {message.content}
+        </span>
+      </div>
+    )
+  }
+
+  const isAgent = message.fromMe
+
   return (
-    <div className={cn(
-      "flex",
-      isAgent ? "justify-end" : "justify-start"
-    )}>
+    <div className={cn("flex", isAgent ? "justify-end" : "justify-start")}>
       <div className={cn(
         "max-w-[70%] rounded-2xl px-4 py-2.5",
-        isAgent 
-          ? "bg-primary text-primary-foreground rounded-br-sm" 
+        isAgent
+          ? "bg-primary text-primary-foreground rounded-br-sm"
           : "bg-muted text-foreground rounded-bl-sm"
       )}>
+        {/* Media badge — shown when the message is an image / audio / etc. */}
+        {message.mediaType && (
+          <div className={cn(
+            "inline-flex items-center gap-1.5 text-[11px] font-medium px-2 py-0.5 rounded-md mb-1.5",
+            isAgent
+              ? "bg-white/20 text-white"
+              : "bg-primary/10 text-primary"
+          )}>
+            {MEDIA_LABELS[message.mediaType] ?? message.mediaType}
+          </div>
+        )}
+
         <p className="text-sm leading-relaxed">{message.content}</p>
-        
+
         <div className={cn(
           "flex items-center gap-1 mt-1",
           isAgent ? "justify-end" : "justify-start"

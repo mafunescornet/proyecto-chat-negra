@@ -5,15 +5,17 @@ import { Input } from "@/components/ui/input"
 import { useState, useEffect } from "react"
 import { socket } from "@/lib/socket"
 import { type Tag } from "@/lib/mock-data"
+import { WhatsAppModal } from "@/components/dashboard/whatsapp-modal"
 import { 
   Search, 
   Inbox, 
   Mail, 
-  Flag, 
   CheckCircle2,
   MessageSquare,
   Plus,
-  Check
+  Check,
+  Wifi,
+  WifiOff
 } from "lucide-react"
 
 const tagColors = [
@@ -37,7 +39,6 @@ interface SidebarProps {
 const filters = [
   { id: "all", label: "All Inbox", icon: Inbox },
   { id: "unread", label: "Unread", icon: Mail },
-  { id: "flagged", label: "Flagged", icon: Flag },
   { id: "resolved", label: "Resolved", icon: CheckCircle2 },
 ]
 
@@ -54,10 +55,15 @@ export function Sidebar({
   const [isCreatingTag, setIsCreatingTag] = useState(false)
   const [newTagName, setNewTagName] = useState("")
   const [selectedColor, setSelectedColor] = useState(tagColors[0].id)
+  const [showWAModal, setShowWAModal] = useState(false)
+  const [isWAConnected, setIsWAConnected] = useState(false)
 
   useEffect(() => {
     socket.on('init_tags', (data: Tag[]) => setTags(data))
     socket.on('tags_updated', (data: Tag[]) => setTags(data))
+    socket.on('whatsapp_ready', () => setIsWAConnected(true))
+    socket.on('whatsapp_disconnected', () => setIsWAConnected(false))
+    socket.on('init_status', ({ isReady }: { isReady: boolean }) => setIsWAConnected(isReady))
     
     // Actively request tags in case the connection already fired
     socket.emit('get_tags')
@@ -65,6 +71,9 @@ export function Sidebar({
     return () => {
       socket.off('init_tags')
       socket.off('tags_updated')
+      socket.off('whatsapp_ready')
+      socket.off('whatsapp_disconnected')
+      socket.off('init_status')
     }
   }, [])
 
@@ -97,6 +106,7 @@ export function Sidebar({
   }
 
   return (
+    <>
     <aside className="w-64 bg-sidebar border-r border-sidebar-border flex flex-col h-full shrink-0 overflow-hidden">
       {/* Header */}
       <div className="p-4 border-b border-sidebar-border shrink-0">
@@ -240,6 +250,34 @@ export function Sidebar({
         </ul>
         </div>
       </div>
+
+      {/* WhatsApp Connection Button — pinned to sidebar bottom */}
+      <div className="px-3 py-3 border-t border-sidebar-border shrink-0">
+        <button
+          onClick={() => setShowWAModal(true)}
+          className={cn(
+            "w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm font-medium transition-all",
+            isWAConnected
+              ? "bg-green-50 text-green-700 hover:bg-green-100"
+              : "bg-muted/70 text-muted-foreground hover:bg-muted hover:text-foreground"
+          )}
+        >
+          {isWAConnected ? (
+            <Wifi className="w-4 h-4 shrink-0" />
+          ) : (
+            <WifiOff className="w-4 h-4 shrink-0" />
+          )}
+          <span className="truncate">
+            {isWAConnected ? "WhatsApp Connected" : "Connect WhatsApp"}
+          </span>
+          {isWAConnected && (
+            <span className="ml-auto w-2 h-2 rounded-full bg-green-500 animate-pulse shrink-0" />
+          )}
+        </button>
+      </div>
     </aside>
+
+    <WhatsAppModal open={showWAModal} onClose={() => setShowWAModal(false)} />
+  </>
   )
 }

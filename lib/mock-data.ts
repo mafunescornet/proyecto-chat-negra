@@ -3,6 +3,10 @@ export interface Message {
   content: string
   fromMe: boolean
   formattedTime: string
+  /** Set when the message is a media type (image, audio, ptt, video, document, sticker, location) */
+  mediaType?: 'image' | 'video' | 'audio' | 'ptt' | 'document' | 'sticker' | 'location'
+  /** Set when the message is a system event (e2e_notification, call_log, gp2, etc.) */
+  isSystem?: boolean
 }
 
 export interface Conversation {
