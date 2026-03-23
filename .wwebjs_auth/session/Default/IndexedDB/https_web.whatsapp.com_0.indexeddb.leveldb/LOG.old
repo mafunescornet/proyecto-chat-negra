@@ -1,0 +1,12 @@
+2026/03/23-00:02:18.629 e00 Reusing MANIFEST C:\Users\mafun\OneDrive\Escritorio\Proyecto Chat\.wwebjs_auth\session\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-000001
+2026/03/23-00:02:18.630 e00 Recovering log #534
+2026/03/23-00:02:18.686 e00 Reusing old log C:\Users\mafun\OneDrive\Escritorio\Proyecto Chat\.wwebjs_auth\session\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/000534.log 
+2026/03/23-00:03:34.233 52b8 Level-0 table #557: started
+2026/03/23-00:03:34.364 52b8 Level-0 table #557: 1985535 bytes OK
+2026/03/23-00:03:34.375 52b8 Delete type=0 #534
+2026/03/23-00:07:20.309 e00 Compacting 1@0 + 0@1 files
+2026/03/23-00:07:20.329 e00 Generated table #558@0: 13645 keys, 288463 bytes
+2026/03/23-00:07:20.339 e00 Generated table #559@0: 1374 keys, 674202 bytes
+2026/03/23-00:07:20.340 e00 Compacted 1@0 + 0@1 files => 962665 bytes
+2026/03/23-00:07:20.341 e00 compacted to: files[ 0 2 19 0 0 0 0 ]
+2026/03/23-00:07:20.341 e00 Delete type=2 #557

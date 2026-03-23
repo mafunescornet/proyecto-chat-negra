@@ -1,0 +1,27 @@
+[
+  {
+    "id": "1",
+    "name": "Urgent",
+    "color": "bg-red-500"
+  },
+  {
+    "id": "2",
+    "name": "New Lead",
+    "color": "bg-success"
+  },
+  {
+    "id": "3",
+    "name": "Support",
+    "color": "bg-pink-500"
+  },
+  {
+    "id": "1774235171407",
+    "name": "ur",
+    "color": "bg-pink-500"
+  },
+  {
+    "id": "1774235182773",
+    "name": "nk",
+    "color": "bg-pink-500"
+  }
+]
